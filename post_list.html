@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Posts</h1>
+    
+    <div class="mb-3">
+        <a href="{% url 'mural:post_create' %}" class="btn btn-primary">Adicionar Novo Post</a>
+    </div>
+    
+    {% if posts %}
+        <div class="list-group">
+            {% for post in posts %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ post.titulo }}</h5>
+                    <p class="mb-1">{{ post.conteudo|truncatewords:30 }}</p>
+                    <div>
+                        <a href="{% url 'mural:post_detail' post.id %}" class="btn btn-sm btn-info">Ver</a>
+                        <a href="{% url 'mural:post_edit' post.id %}" class="btn btn-sm btn-warning">Editar</a>
+                        <a href="{% url 'mural:post_delete' post.id %}" class="btn btn-sm btn-danger">Excluir</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhum post cadastrado ainda. Seja o primeiro a adicionar!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

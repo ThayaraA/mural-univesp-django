@@ -1,47 +1,54 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from .models import Questao
-from .forms import QuestaoForm
-from django.contrib.auth.forms import UserCreationForm
 
-# View baseada em classe para listar questões
-class QuestaoListView(ListView):
-    model = Questao
-    template_name = 'questoes/lista_questoes.html'
-    context_object_name = 'questoes'
-    ordering = ['-data_criacao']  # Ordena do mais recente para o mais antigo
+# Views de exemplo para o app mural
+def mural_home(request):
+    return render(request, 'mural/home.html')
 
-# View baseada em função para listar questões (alternativa)
-def lista_questoes(request):
-    questoes = Questao.objects.all().order_by('-data_criacao')
-    return render(request, 'questoes/lista_questoes.html', {'questoes': questoes})
+def post_list(request):
+    # Aqui você adicionaria a lógica para listar posts
+    context = {
+        'posts': []  # Substituir por consulta real ao banco de dados
+    }
+    return render(request, 'mural/post_list.html', context)
 
-# View para cadastro de usuários
-def cadastro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Conta criada para {username}! Agora você pode fazer login.')
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'questoes/cadastro.html', {'form': form})
+def post_detail(request, post_id):
+    # Aqui você adicionaria a lógica para exibir detalhes de um post
+    context = {
+        'post': None  # Substituir por consulta real ao banco de dados
+    }
+    return render(request, 'mural/post_detail.html', context)
 
-# View para adicionar novas questões
 @login_required
-def questao_nova(request):
+def post_create(request):
+    # Aqui você adicionaria a lógica para criar um novo post
     if request.method == 'POST':
-        form = QuestaoForm(request.POST)
-        if form.is_valid():
-            questao = form.save(commit=False)
-            questao.save()
-            messages.success(request, 'Questão adicionada com sucesso!')
-            return redirect('lista_questoes')
-    else:
-        form = QuestaoForm()
-    return render(request, 'questoes/questao_form.html', {'form': form, 'titulo': 'Nova Questão'})
+        # Processar o formulário
+        messages.success(request, 'Post criado com sucesso!')
+        return redirect('mural:post_list')
+    return render(request, 'mural/post_form.html')
+
+@login_required
+def post_edit(request, post_id):
+    # Aqui você adicionaria a lógica para editar um post existente
+    if request.method == 'POST':
+        # Processar o formulário
+        messages.success(request, 'Post atualizado com sucesso!')
+        return redirect('mural:post_detail', post_id=post_id)
+    context = {
+        'post': None  # Substituir por consulta real ao banco de dados
+    }
+    return render(request, 'mural/post_form.html', context)
+
+@login_required
+def post_delete(request, post_id):
+    # Aqui você adicionaria a lógica para excluir um post
+    if request.method == 'POST':
+        # Excluir o post
+        messages.success(request, 'Post excluído com sucesso!')
+        return redirect('mural:post_list')
+    context = {
+        'post': None  # Substituir por consulta real ao banco de dados
+    }
+    return render(request, 'mural/post_confirm_delete.html', context)

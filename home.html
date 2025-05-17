@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Mural de Recados</h1>
+    <p>Bem-vindo ao mural de recados do sistema de questões.</p>
+    
+    <div class="mb-3">
+        <a href="{% url 'mural:post_list' %}" class="btn btn-primary">Ver todos os posts</a>
+        <a href="{% url 'mural:post_create' %}" class="btn btn-success">Criar novo post</a>
+    </div>
+</div>
+{% endblock %}
