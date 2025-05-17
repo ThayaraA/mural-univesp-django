@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Lista de Questões</h1>
+    
+    <div class="mb-3">
+        <a href="{% url 'questao_nova' %}" class="btn btn-primary">Adicionar Nova Questão</a>
+    </div>
+    
+    {% if questoes %}
+        <div class="list-group">
+            {% for questao in questoes %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">{{ questao.titulo }}</h5>
+                    <p class="mb-1">{{ questao.descricao|truncatewords:30 }}</p>
+                    <small class="text-muted">Criado em: {{ questao.data_criacao|date:"d/m/Y H:i" }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Nenhuma questão cadastrada ainda. Seja o primeiro a adicionar!
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

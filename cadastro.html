@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Cadastro</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <p>Por favor, corrija os erros abaixo:</p>
+                                {{ form.errors }}
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Nome de usuário</label>
+                            <input type="text" name="username" class="form-control" id="id_username" required>
+                            <div class="form-text">Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Senha</label>
+                            <input type="password" name="password1" class="form-control" id="id_password1" required>
+                            <div class="form-text">
+                                <ul>
+                                    <li>Sua senha não pode ser muito parecida com suas outras informações pessoais.</li>
+                                    <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+                                    <li>Sua senha não pode ser uma senha comumente utilizada.</li>
+                                    <li>Sua senha não pode ser inteiramente numérica.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password2" class="form-label">Confirmação de senha</label>
+                            <input type="password" name="password2" class="form-control" id="id_password2" required>
+                            <div class="form-text">Digite a mesma senha de antes, para verificação.</div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
