@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2>{{ questao.titulo }}</h2>
+                    <small class="text-muted">Criado em: {{ questao.data_criacao|date:"d/m/Y H:i" }}</small>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Questão</h5>
+                    <div class="card-text mb-4">
+                        {{ questao.descricao|linebreaks }}
+                    </div>
+                    
+                    {% if questao.explicacao %}
+                        <h5 class="card-title">Explicação</h5>
+                        <div class="card-text">
+                            {{ questao.explicacao|linebreaks }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'lista_questoes' %}" class="btn btn-secondary">Voltar para Lista</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'questao_editar' questao.id %}" class="btn btn-warning">Editar</a>
+                        <a href="{% url 'questao_excluir' questao.id %}" class="btn btn-danger">Excluir</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Informações Adicionais</h5>
+                </div>
+                <div class="card-body">
+                    <p>Esta questão foi criada por um usuário do sistema.</p>
+                    <p>Use as explicações para entender melhor o conteúdo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
